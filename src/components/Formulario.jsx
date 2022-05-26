@@ -1,15 +1,33 @@
 import { Fragment } from 'react';
 import {MARCAS, YEARS, PLANES} from '../constants';
+import useCotizador from '../hooks/useCotizador';
+import Error from './Error';
 
 const Formulario = () => {
+const { datos, handleChangeDatos, error, setError } = useCotizador();
+const handleSubmit = (e) => {
+    e.preventDefault();
+    if(Object.values(datos).includes('')){
+        setError("Todos los campos obligatorios");
+        return;
+    }else{
+        setError("");
+    }
+}
   return (
     <>
-        <form>
+        {error && <Error/>}
+        <form onSubmit={handleSubmit}>
             <div className="my-5">
                 <label className="block mb-3 font-bold text-gray-400 uppercase">
                     Marca
                 </label>
-                <select name="marca" className="w-full p-3 bg-white border border-gray-200" >
+                <select 
+                    name="marca" 
+                    className="w-full p-3 bg-white border border-gray-200" 
+                    onChange={e => handleChangeDatos(e)}
+                    value={datos.marca}
+                >
                     <option value="">--Selecciona Marca--</option>
                     {MARCAS.map(marca => (
                       <option value={marca.id} key={marca.id}>{marca.nombre}</option>  
@@ -20,7 +38,12 @@ const Formulario = () => {
                 <label className="block mb-3 font-bold text-gray-400 uppercase">
                     Año
                 </label>
-                <select name="marca" className="w-full p-3 bg-white border border-gray-200" >
+                <select 
+                    name="year" 
+                    className="w-full p-3 bg-white border border-gray-200"
+                    onChange={e => handleChangeDatos(e)}
+                    value={datos.year}
+                >
                     <option value="">--Selecciona Año--</option>
                     {YEARS.map((year, index) => (
                       <option value={index} key={index}>{year}</option>  
@@ -39,6 +62,7 @@ const Formulario = () => {
                                 name="plan"
                                 type="radio"
                                 value={plan.id}
+                                onChange={e => handleChangeDatos(e)}
                             />
                         </Fragment>
                     ))}
