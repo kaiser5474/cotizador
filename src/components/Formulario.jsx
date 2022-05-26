@@ -4,7 +4,7 @@ import useCotizador from '../hooks/useCotizador';
 import Error from './Error';
 
 const Formulario = () => {
-const { datos, handleChangeDatos, error, setError } = useCotizador();
+const { datos, handleChangeDatos, error, setError, cotizarSeguro } = useCotizador();
 const handleSubmit = (e) => {
     e.preventDefault();
     if(Object.values(datos).includes('')){
@@ -12,8 +12,10 @@ const handleSubmit = (e) => {
         return;
     }else{
         setError("");
+        cotizarSeguro();
     }
 }
+
   return (
     <>
         {error && <Error/>}
@@ -30,7 +32,7 @@ const handleSubmit = (e) => {
                 >
                     <option value="">--Selecciona Marca--</option>
                     {MARCAS.map(marca => (
-                      <option value={marca.id} key={marca.id}>{marca.nombre}</option>  
+                      <option value={marca.nombre} key={marca.id}>{marca.nombre}</option>  
                     ))}
                 </select>
             </div>
@@ -46,7 +48,7 @@ const handleSubmit = (e) => {
                 >
                     <option value="">--Selecciona Año--</option>
                     {YEARS.map((year, index) => (
-                      <option value={index} key={index}>{year}</option>  
+                      <option value={year} key={index}>{year}</option>  
                     ))}
                 </select>
             </div>
